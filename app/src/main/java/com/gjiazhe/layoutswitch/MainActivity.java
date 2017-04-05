@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.gjiazhe.layoutswitch.ItemAdapter.SPAN_COUNT_BIG;
+import static com.gjiazhe.layoutswitch.ItemAdapter.SPAN_COUNT_SMALL;
+
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         initItemsData();
 
-        gridLayoutManager = new GridLayoutManager(this, 1);
+        gridLayoutManager = new GridLayoutManager(this, SPAN_COUNT_SMALL);
         itemAdapter = new ItemAdapter(items, gridLayoutManager);
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         recyclerView.setAdapter(itemAdapter);
@@ -59,22 +62,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchLayout() {
-        switch (gridLayoutManager.getSpanCount()) {
-            case 1:
-                gridLayoutManager.setSpanCount(3);
-                break;
-            case 3:
-                gridLayoutManager.setSpanCount(1);
-                break;
-            default:
-                gridLayoutManager.setSpanCount(1);
-                break;
+        if (gridLayoutManager.getSpanCount() == SPAN_COUNT_SMALL) {
+            gridLayoutManager.setSpanCount(SPAN_COUNT_BIG);
+        } else {
+            gridLayoutManager.setSpanCount(SPAN_COUNT_SMALL);
         }
         itemAdapter.notifyItemRangeChanged(0, itemAdapter.getItemCount());
     }
 
     private void switchIcon(MenuItem item) {
-        if (gridLayoutManager.getSpanCount() == 3) {
+        if (gridLayoutManager.getSpanCount() == SPAN_COUNT_BIG) {
             item.setIcon(getResources().getDrawable(R.drawable.ic_span_3));
         } else {
             item.setIcon(getResources().getDrawable(R.drawable.ic_span_1));
